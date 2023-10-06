@@ -1,8 +1,6 @@
 import { useState } from "react";
 
 const AddForm = (props) => {
-  //   const { value } = props;
-  //   console.log(value);
   const { handleAdd } = props;
   const [data, setData] = useState("");
 
