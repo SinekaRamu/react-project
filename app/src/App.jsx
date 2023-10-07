@@ -8,7 +8,7 @@ function setToLocalStorage(value) {
 }
 
 function getFromLocalStorage() {
-  return JSON.parse(localStorage.getItem("My-favourites"));
+  return JSON.parse(localStorage.getItem("My-favourites")) || [];
 }
 
 const App = () => {
@@ -19,21 +19,24 @@ const App = () => {
   }, []);
 
   function handleAdd(payload) {
-    const temp = [...value];
-    temp.push(payload);
-    setValue(temp);
-    setToLocalStorage(temp);
-    // setValue((prev) => {
-    //   const prev = [...value];
-    //   console.log(prev);
-    // });
+    // const temp = [...value];
+    // temp.push(payload);
+    // setValue(temp);
+    // setToLocalStorage(temp);
+    const newValue = [...value, payload];
+    setValue(newValue);
+    setToLocalStorage(newValue);
   }
 
+  function handleFilter(newArray) {
+    setValue(newArray);
+    setToLocalStorage(newArray);
+  }
   return (
     <>
       <h1>Likes App</h1>
       <AddForm handleAdd={handleAdd} />
-      <MyList listItem={value} />
+      <MyList listItem={value} handleFilter={handleFilter} />
     </>
   );
 };
