@@ -2,6 +2,12 @@ const MyList = (props) => {
   // console.log(props.value);
   const { listItem } = props;
 
+  const handleDelete = (item) => {
+    const filteredArray = listItem.filter((itemId) => {
+      return itemId.id !== item.id;
+    });
+    console.log(filteredArray);
+  };
   // const myArray = [
   //   { id: 23, title: "me" },
   //   { id: 24, title: "you" },
@@ -17,8 +23,6 @@ const MyList = (props) => {
   //   </div>
   // );
 
-  console.log(listItem);
-
   return (
     <div className="cardDiv">
       {listItem.map((item) => {
@@ -26,7 +30,7 @@ const MyList = (props) => {
           <div key={item.id}>
             <p>{item.value}</p>
             <button>Edit</button>
-            <button>delete</button>
+            <button onClick={handleDelete(item.id)}>delete</button>
           </div>
         );
       })}

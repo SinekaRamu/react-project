@@ -10,20 +10,17 @@ const AddForm = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // setData(() => {
-    //   const value = {
-    //     id: new Date().getTime(),
-    //     title: data,
-    //   };
-    //   console.log(value);
-    //   return [...data, value];
-    // });
-    const obj = {
-      id: new Date().getTime(),
-      value: data,
-    };
-    handleAdd(obj);
-    setData("");
+
+    if (data == "") {
+      alert("type your favourite");
+    } else {
+      const obj = {
+        id: new Date().getTime(),
+        value: data,
+      };
+      handleAdd(obj);
+      setData("");
+    }
   };
 
   return (

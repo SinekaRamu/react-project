@@ -3,23 +3,30 @@ import { MyList, AddForm } from "./components";
 
 import "./App.css";
 
+function setToLocalStorage(value) {
+  localStorage.setItem("My-favourites", JSON.stringify(value));
+}
+
+function getFromLocalStorage() {
+  return JSON.parse(localStorage.getItem("My-favourites"));
+}
+
 const App = () => {
-  const [value, setValue] = useState([
-    {
-      id: 1,
-      value: "choco",
-    },
-    {
-      id: 2,
-      value: "chocolate",
-    },
-  ]);
+  const [value, setValue] = useState([]);
+
+  useEffect(() => {
+    setValue(getFromLocalStorage());
+  }, []);
 
   function handleAdd(payload) {
-    console.log(payload);
     const temp = [...value];
     temp.push(payload);
     setValue(temp);
+    setToLocalStorage(temp);
+    // setValue((prev) => {
+    //   const prev = [...value];
+    //   console.log(prev);
+    // });
   }
 
   return (
