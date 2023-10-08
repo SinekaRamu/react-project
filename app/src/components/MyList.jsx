@@ -1,42 +1,64 @@
+import { useState } from "react";
+import Card from "./Card";
+
 const MyList = (props) => {
-  // console.log(props.value);
-  const { listItem, handleFilter } = props;
+  const { setValue, listItem, handleFilter, handleUpdate } = props;
+  const [updatedValue, setUpdatedValue] = useState("");
 
   function handleDelete(id) {
-    console.log("delete");
-    const filteredArray = listItem.filter((item) => {
-      return item.id !== id;
-    });
-    console.log(filteredArray);
+    const filteredArray = listItem.filter((item) => item.id !== id);
     handleFilter(filteredArray);
   }
-  // const myArray = [
-  //   { id: 23, title: "me" },
-  //   { id: 24, title: "you" },
-  //   { id: 25, title: "they" },
-  //   { id: 26, title: "them" },
-  // ];
 
-  // return (
-  //   <div>
-  //     {myArray.map((ma) => {
-  //       return <p key={ma.id}>{ma.title}</p>;
-  //     })}
-  //   </div>
-  // );
+  function handleEdit(id) {
+    // console.log("edit");
+    // console.log();
+    // return (item.isEdit = true);
+    const listIndex = listItem.findIndex((item) => {
+      return item.id == id;
+    });
+    listItem[listIndex].isEdit = true;
+    console.log(listItem[listIndex]);
+  }
+  function handleSave(item) {
+    item.isEdit = false;
+    item.value = updatedValue;
+    handleUpdate(updatedValue);
+    console.log("update");
+  }
+
+  const EditCard = (props) => {
+    const { item } = props;
+    return (
+      <>
+        <input
+          type="text"
+          value={item.value}
+          placeholder={item.vlaue}
+          onChange={(e) => setUpdatedValue(e.target.value)}
+        />
+        <button onClick={() => handleSave(item)}>Update</button>
+      </>
+    );
+  };
 
   return (
-    <div className="cardDiv">
+    <ul className="cardDiv">
       {listItem.map((item) => {
+        if (item.isEdit) {
+          console.log(item);
+          return <EditCard item={item} />;
+        }
         return (
-          <div key={item.id}>
-            <p>{item.value}</p>
-            <button>Edit</button>
-            <button onClick={() => handleDelete(item.id)}>delete</button>
-          </div>
+          <Card
+            setValue={setValue}
+            item={item}
+            handleDelete={handleDelete}
+            handleEdit={handleEdit}
+          />
         );
       })}
-    </div>
+    </ul>
   );
 };
 

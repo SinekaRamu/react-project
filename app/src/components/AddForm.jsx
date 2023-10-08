@@ -4,9 +4,7 @@ const AddForm = (props) => {
   const { handleAdd } = props;
   const [data, setData] = useState("");
 
-  const handleChange = (e) => {
-    setData(e.target.value);
-  };
+  const handleChange = (e) => setData(e.target.value);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,6 +15,7 @@ const AddForm = (props) => {
       const obj = {
         id: new Date().getTime(),
         value: data,
+        isEdit: false,
       };
       handleAdd(obj);
       setData("");
@@ -26,7 +25,13 @@ const AddForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <label htmlFor="items">What do you like? </label>
-      <input type="text" id="items" value={data} onChange={handleChange} />
+      <input
+        type="text"
+        id="items"
+        value={data}
+        placeholder="type what you love"
+        onChange={handleChange}
+      />
       <button type="sumbit">Add</button>
     </form>
   );

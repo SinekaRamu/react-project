@@ -24,5 +24,13 @@ input {
 .cardDiv {
   padding-top: 20px;
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
+}
+
+.card {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

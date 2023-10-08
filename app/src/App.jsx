@@ -14,29 +14,36 @@ function getFromLocalStorage() {
 const App = () => {
   const [value, setValue] = useState([]);
 
+  //intial loading get datas from sstorgae
+  useEffect(() => setValue(getFromLocalStorage()), []);
+  //save in storage when data changes
   useEffect(() => {
-    setValue(getFromLocalStorage());
-  }, []);
+    if (!value) {
+      setToLocalStorage(value);
+    }
+  }, [value]);
 
   function handleAdd(payload) {
-    // const temp = [...value];
-    // temp.push(payload);
-    // setValue(temp);
-    // setToLocalStorage(temp);
-    const newValue = [...value, payload];
-    setValue(newValue);
-    setToLocalStorage(newValue);
+    // const newValue = [...value, payload];
+    setValue([...value, payload]);
   }
 
   function handleFilter(newArray) {
     setValue(newArray);
     setToLocalStorage(newArray);
   }
+  function handleUpdate(value) {}
   return (
     <>
       <h1>Likes App</h1>
       <AddForm handleAdd={handleAdd} />
-      <MyList listItem={value} handleFilter={handleFilter} />
+
+      <MyList
+        setValue={setValue}
+        listItem={value}
+        handleFilter={handleFilter}
+        handleUpdate={handleUpdate}
+      />
     </>
   );
 };
