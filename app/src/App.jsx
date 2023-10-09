@@ -13,36 +13,48 @@ function getFromLocalStorage() {
 
 const App = () => {
   const [value, setValue] = useState([]);
-
   //intial loading get datas from sstorgae
   useEffect(() => setValue(getFromLocalStorage()), []);
   //save in storage when data changes
-  useEffect(() => {
-    if (!value) {
-      setToLocalStorage(value);
-    }
-  }, [value]);
-
+  // useEffect(() => {
+  //   if (!value) {
+  //     setToLocalStorage(value);
+  //   }
+  // }, [value]);
   function handleAdd(payload) {
-    // const newValue = [...value, payload];
-    setValue([...value, payload]);
+    const newValue = [...value, payload];
+    setValue(newValue);
+    setToLocalStorage(newValue);
   }
 
   function handleFilter(newArray) {
     setValue(newArray);
     setToLocalStorage(newArray);
   }
-  function handleUpdate(value) {}
+  function isEditUpdate(id) {
+    const index = value.findIndex((item) => item.id == id);
+    const editForm = value[index];
+    editForm.isEdit = true;
+    setToLocalStorage(value);
+  }
+
+  function updateChange(id, editValue) {
+    const index = value.findIndex((item) => item.id == id);
+    const editForm = value[index];
+    editForm.value = editValue;
+    editForm.isEdit = false;
+    setToLocalStorage(value);
+  }
   return (
     <>
       <h1>Likes App</h1>
       <AddForm handleAdd={handleAdd} />
 
       <MyList
-        setValue={setValue}
         listItem={value}
         handleFilter={handleFilter}
-        handleUpdate={handleUpdate}
+        updateChange={updateChange}
+        isEditUpdate={isEditUpdate}
       />
     </>
   );

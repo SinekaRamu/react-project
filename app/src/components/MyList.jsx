@@ -2,8 +2,7 @@ import { useState } from "react";
 import Card from "./Card";
 
 const MyList = (props) => {
-  const { setValue, listItem, handleFilter, handleUpdate } = props;
-  const [updatedValue, setUpdatedValue] = useState("");
+  const { listItem, handleFilter, isEditUpdate, updateChange } = props;
 
   function handleDelete(id) {
     const filteredArray = listItem.filter((item) => item.id !== id);
@@ -11,33 +10,28 @@ const MyList = (props) => {
   }
 
   function handleEdit(id) {
-    // console.log("edit");
-    // console.log();
-    // return (item.isEdit = true);
-    const listIndex = listItem.findIndex((item) => {
-      return item.id == id;
-    });
-    listItem[listIndex].isEdit = true;
-    console.log(listItem[listIndex]);
+    console.log("edit", id);
+    isEditUpdate(id);
   }
-  function handleSave(item) {
-    item.isEdit = false;
-    item.value = updatedValue;
-    handleUpdate(updatedValue);
-    console.log("update");
+  function handleSave(id, value) {
+    updateChange(id, value);
+    console.log(value);
   }
-
   const EditCard = (props) => {
     const { item } = props;
+    const [editValue, setEditValue] = useState(item.value);
+    const handleChange = (e) => setEditValue(e.target.value);
+
     return (
       <>
         <input
+          id={item.id}
           type="text"
-          value={item.value}
-          placeholder={item.vlaue}
-          onChange={(e) => setUpdatedValue(e.target.value)}
+          placeholder={item.value}
+          value={editValue}
+          onChange={handleChange}
         />
-        <button onClick={() => handleSave(item)}>Update</button>
+        <button onClick={() => handleSave(item.id, editValue)}>Update</button>
       </>
     );
   };
@@ -45,17 +39,18 @@ const MyList = (props) => {
   return (
     <ul className="cardDiv">
       {listItem.map((item) => {
-        if (item.isEdit) {
-          console.log(item);
-          return <EditCard item={item} />;
-        }
         return (
-          <Card
-            setValue={setValue}
-            item={item}
-            handleDelete={handleDelete}
-            handleEdit={handleEdit}
-          />
+          <div key={item.id}>
+            {item.isEdit ? (
+              <EditCard item={item} />
+            ) : (
+              <Card
+                item={item}
+                handleDelete={handleDelete}
+                handleEdit={handleEdit}
+              />
+            )}
+          </div>
         );
       })}
     </ul>
